@@ -14,7 +14,7 @@ module Data.Quaternion
   ( Quat, Vector, zero, real, imag, mul
   , rowMajorElems, eulerAngles, angleAxis
   , normalize, reciprocal, slerp, lookAt
-  , fromVec, toVec, dot, plus, scale ) 
+  , fromVec, toVec, dot, plus, scale )
 where
 
 -- |The type of a quaternion, left abstract.
@@ -96,11 +96,11 @@ angleAxis a (x, y, z) = Q { real = c, imag = (s * x', s * y', s * z') }
     mag = sqrt (x*x+y*y+z*z)
 
 -- |Compute a quaternion that rotates from the current direction to
--- the desired direction, with a given notion of "up".
+-- the desired direction, with a given notion of \"up\".
 lookAt :: (Floating t, Ord t) => 
              Vector t -- ^ Current direction of object
           -> Vector t -- ^ Desired direction of object
-          -> Vector t -- ^ Vector considered to be "up"
+          -> Vector t -- ^ Vector considered to be \"up\"
           -> Quat t
 lookAt cur tgt up 
   | nx == 0 && ny == 0 && nz == 0 = 
