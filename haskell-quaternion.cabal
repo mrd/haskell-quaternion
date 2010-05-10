@@ -18,6 +18,7 @@ Description:
         orientation and rotations of objects in three dimensions. 
         They can easily be converted into rotation matrix or Euler
         angle form for usage with OpenGL or similar libraries.
+Extra-source-files: README
 Library
   Build-Depends:  base
   Exposed-Modules: Data.Quaternion
