@@ -17,7 +17,10 @@ module Data.Quaternion
   , fromVec, toVec, dot, plus, scale ) 
 where
 
+-- |The type of a quaternion, left abstract.
 data Quat a = Q { real :: a, imag :: (a, a, a) }
+
+-- |'Vector' is just a more descriptive name used for a 3-tuple here.
 type Vector a = (a, a, a)
 
 -- |The Zero quaternion
