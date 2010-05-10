@@ -1,0 +1,7 @@
+haskell-quaternion is a Cabalized package.  You can install it using
+the usual sequence of commands [brackets for user installation]:
+
+runhaskell Setup.hs configure  [--user --prefix=$HOME]
+runhaskell Setup.hs build
+runhaskell Setup.hs haddock    # optional: build documentation
+runhaskell Setup.hs install    [--user]
