@@ -17,6 +17,8 @@ module Data.Quaternion
   , fromVec, toVec, dot, plus, scale )
 where
 
+import Data.Quaternion.Approx
+
 -- |The type of a quaternion, left abstract.
 data Quat a = Q { real :: a         -- ^ real part
                 , imag :: (a, a, a) -- ^ imaginary part
@@ -99,24 +101,24 @@ angleAxis a (x, y, z) = Q { real = c, imag = (s * x', s * y', s * z') }
 
 -- |Compute a quaternion that rotates from the current direction to
 -- the desired direction, with a given notion of \"up\".
-lookAt :: (Floating t, Ord t) => 
+lookAt :: (Approx t, Floating t, Ord t) => 
              Vector t -- ^ Current direction of object
           -> Vector t -- ^ Desired direction of object
           -> Vector t -- ^ Vector considered to be \"up\"
           -> Quat t
 lookAt cur tgt up 
-  | nx == 0 && ny == 0 && nz == 0 = 
+  | nx ~== 0 && ny ~== 0 && nz ~== 0 = 
     -- the normal magnitude is 0 so the vectors are parallel
     if sgn cx == sgn tx && sgn cy == sgn ty && sgn cz == sgn tz then
     -- sgn of cur is the same as tgt means they point in the same dir
       Q { real = 1, imag = (0, 0, 0) }
     -- doing a 180-degree rotation, be careful of axis
-    else if cx == 0 then
+    else if cx ~== 0 then
       angleAxis 180 (crossProduct cur (1, 0, 0))
     else
       angleAxis 180 (crossProduct cur (0, 0, 1))
   -- if projected up-vector is meaningless then just forget trying to re-orient
-  | up_p == (0, 0, 0) = q 
+  | up_p ~== (0, 0, 0) = q 
   | otherwise          = q' `mul` q
   where   
     (cx, cy, cz) = cur
@@ -153,21 +155,21 @@ eulerAngles q = ( r2d (atan2 (2*s*a + 2*b*c) (1 - 2*(a*a + b*b)))
 
 -- |Use the SLERP method of interpolating a partial rotation between
 -- two quaternions.
-slerp :: (Floating a, Ord a) => 
+slerp :: (Approx a, Floating a, Ord a) => 
            Quat a -- ^ Starting quaternion
         -> Quat a -- ^ Ending quaternion
         -> a      -- ^ Interpolation factor
         -> Quat a
 slerp q0 q1 t 
   -- if inputs are not co-linear, use SLERP  
-  | d < 1    = (cos theta `scale` nq0) `plus` (sin theta `scale` nq2)
+  | d ~< 1    = (cos theta `scale` nq0) `plus` (sin theta `scale` nq2)
   -- inputs are too close to being co-linear, so just interpolate  
   | otherwise = normalize (nq0 `plus` (t `scale` (nq1 `plus` ((-1) `scale` nq0))))
   where
     nq0 = normalize q0
     nq1 = normalize q1
     d = nq0 `dot` nq1
-    d' = min 1 (max (-1) d) -- clamp [-1, 1]
+    d' = clamp (-1, 1) d
     theta = t * acos d
     q2 = nq1 `plus` ((-d) `scale` nq0)
     nq2 = normalize q2
@@ -212,5 +214,3 @@ project (vx, vy, vz) (nx, ny, nz) = (ux, uy, uz)
     ux            = vx - nx' * dp
     uy            = vy - ny' * dp
     uz            = vz - nz' * dp
-
-sgn x | x < 0 = -1 | x > 0 = 1 | x == 0 = 0

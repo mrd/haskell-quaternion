@@ -21,4 +21,4 @@ Description:
 Extra-source-files: README
 Library
   Build-Depends:   base >= 3 && < 5
-  Exposed-Modules: Data.Quaternion
+  Exposed-Modules: Data.Quaternion, Data.Quaternion.Approx
