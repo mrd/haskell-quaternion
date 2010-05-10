@@ -1,6 +1,7 @@
 Name:           haskell-quaternion
 Version:        1.0
 Cabal-Version:  >= 1.2
+Build-type:     Simple
 License:        BSD3
 License-file:   LICENSE
 Author:         Matthew Danish <mrd@debian.org>
