@@ -11,14 +11,16 @@
 --   @makeMatrix (4, 4) (rowMajorElems q)@
 
 module Data.Quaternion
-  ( Quat, Vector, zero, real, imag, mul
+  ( Quat, Vector, zero, mul
   , rowMajorElems, eulerAngles, angleAxis
   , normalize, reciprocal, slerp, lookAt
   , fromVec, toVec, dot, plus, scale )
 where
 
 -- |The type of a quaternion, left abstract.
-data Quat a = Q { real :: a, imag :: (a, a, a) }
+data Quat a = Q { real :: a         -- ^ real part
+                , imag :: (a, a, a) -- ^ imaginary part
+                }
 
 -- |'Vector' is just a more descriptive name used for a 3-tuple here.
 type Vector a = (a, a, a)
