@@ -1,0 +1,21 @@
+Name:           haskell-quaternion
+Version:        1.0
+Cabal-Version:  >= 1.2
+License:        BSD3
+License-file:   LICENSE
+Author:         Matthew Danish <mrd@debian.org>
+Maintainer:     mrd@debian.org
+Synopsis:       Quaternion creation, manipulation, and conversion to rotation matrices
+Description:
+        Quaternions are a generalization of complex numbers.  They are
+        mostly replaced in usage by vectors and matrices.  However,
+        quaternions turn out to be a more efficient and easily
+        composable alternative to rotation matrices or Euler angles.
+        Therefore, they still retain a niche in computer graphics and
+        game programming specifically for the representation of
+        orientation and rotations of objects in three dimensions. 
+        They can easily be converted into rotation matrix or Euler
+        angle form for usage with OpenGL or similar libraries.
+Library
+  Build-Depends:  base
+  Exposed-Modules: Data.Quaternion
