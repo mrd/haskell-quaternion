@@ -1,0 +1,956 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Quaternion</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Data-Quaternion.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>haskell-quaternion-1.0: Quaternion creation, manipulation, and conversion to rotation matrices</TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Quaternion</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Quaternion (a.k.a. 4-dimensional complex numbers) operations, with
+ particular emphasis on the representation of rotations in
+ 3-dimensional space.
+</P
+><P
+>Typical quaternion usage in computer graphics is to construct or
+ compose one, such as a 45-degree rotation around the X-axis:
+   <TT
+>let q = angleAxis 45 (1, 0, 0)</TT
+>
+ and then either directly multiply it by a vector like so:
+   <TT
+>toVec (reciprocal q <TT
+><A HREF="Data-Quaternion.html#v%3Amul"
+>mul</A
+></TT
+> fromVec v <TT
+><A HREF="Data-Quaternion.html#v%3Amul"
+>mul</A
+></TT
+> q)</TT
+>
+ or perhaps convert it to a matrix for use with OpenGL:
+   <TT
+>makeMatrix (4, 4) (rowMajorElems q)</TT
+>
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AQuat"
+>Quat</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AVector"
+>Vector</A
+> a = (a, a, a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Azero"
+>zero</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Areal"
+>real</A
+> :: <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aimag"
+>imag</A
+> :: <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; (a, a, a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Amul"
+>mul</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> t =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3ArowMajorElems"
+>rowMajorElems</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> t =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; [t]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AeulerAngles"
+>eulerAngles</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ARealFloat"
+>RealFloat</A
+> t =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> t</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AangleAxis"
+>angleAxis</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3AFloating"
+>Floating</A
+> a =&gt; a -&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> a -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Anormalize"
+>normalize</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3AFloating"
+>Floating</A
+> t =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Areciprocal"
+>reciprocal</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3AFractional"
+>Fractional</A
+> a =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aslerp"
+>slerp</A
+> :: (<A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3AFloating"
+>Floating</A
+> a, <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; a -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlookAt"
+>lookAt</A
+> :: (<A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3AFloating"
+>Floating</A
+> t, <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Data-Ord.html#t%3AOrd"
+>Ord</A
+> t) =&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromVec"
+>fromVec</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> a -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtoVec"
+>toVec</A
+> ::  <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Adot"
+>dot</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aplus"
+>plus</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> t =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ascale"
+>scale</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> t =&gt; t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Quat"
+><A NAME="t%3AQuat"
+></A
+></A
+><B
+>Quat</B
+> a </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The type of a quaternion, left abstract.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:Vector"
+><A NAME="t%3AVector"
+></A
+></A
+><B
+>Vector</B
+> a = (a, a, a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+></TT
+> is just a more descriptive name used for a 3-tuple here.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:zero"
+><A NAME="v%3Azero"
+></A
+></A
+><B
+>zero</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>The Zero quaternion
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:real"
+><A NAME="v%3Areal"
+></A
+></A
+><B
+>real</B
+> :: <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:imag"
+><A NAME="v%3Aimag"
+></A
+></A
+><B
+>imag</B
+> :: <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; (a, a, a)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:mul"
+><A NAME="v%3Amul"
+></A
+></A
+><B
+>mul</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> t =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Quaternion multiplication
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:rowMajorElems"
+><A NAME="v%3ArowMajorElems"
+></A
+></A
+><B
+>rowMajorElems</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> t =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; [t]</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Conversion to 4x4 homogeneous matrix elements in row-major order
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:eulerAngles"
+><A NAME="v%3AeulerAngles"
+></A
+></A
+><B
+>eulerAngles</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ARealFloat"
+>RealFloat</A
+> t =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> t</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Convert the quaternion into an equivalent triple of Euler angles.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:angleAxis"
+><A NAME="v%3AangleAxis"
+></A
+></A
+><B
+>angleAxis</B
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+>:: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3AFloating"
+>Floating</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+>=&gt; a</TD
+><TD CLASS="rdoc"
+>Axis of rotation
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="ndoc" COLSPAN="2"
+>Given an angle and an axis, produce a quaternion describing that
+ rotation.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:normalize"
+><A NAME="v%3Anormalize"
+></A
+></A
+><B
+>normalize</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3AFloating"
+>Floating</A
+> t =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Quaternion normalization to unit length
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:reciprocal"
+><A NAME="v%3Areciprocal"
+></A
+></A
+><B
+>reciprocal</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3AFractional"
+>Fractional</A
+> a =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Quaternion reciprocal
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:slerp"
+><A NAME="v%3Aslerp"
+></A
+></A
+><B
+>slerp</B
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+>:: (<A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3AFloating"
+>Floating</A
+> a, <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a)</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+>=&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+><TD CLASS="rdoc"
+>Ending quaternion
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+><TD CLASS="rdoc"
+>Interpolation factor
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="ndoc" COLSPAN="2"
+>Use the SLERP method of interpolating a partial rotation between
+ two quaternions.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lookAt"
+><A NAME="v%3AlookAt"
+></A
+></A
+><B
+>lookAt</B
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+>:: (<A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3AFloating"
+>Floating</A
+> t, <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Data-Ord.html#t%3AOrd"
+>Ord</A
+> t)</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+>=&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> t</TD
+><TD CLASS="rdoc"
+>Desired direction of object
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> t</TD
+><TD CLASS="rdoc"
+>Vector considered to be &quot;up&quot;
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> t</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="ndoc" COLSPAN="2"
+>Compute a quaternion that rotates from the current direction to
+ the desired direction, with a given notion of &quot;up&quot;.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:fromVec"
+><A NAME="v%3AfromVec"
+></A
+></A
+><B
+>fromVec</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> a -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Produce a zero-rotation quaternion from a vector
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:toVec"
+><A NAME="v%3AtoVec"
+></A
+></A
+><B
+>toVec</B
+> ::  <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; <A HREF="Data-Quaternion.html#t%3AVector"
+>Vector</A
+> a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Discard the real part and return a vector
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:dot"
+><A NAME="v%3Adot"
+></A
+></A
+><B
+>dot</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Quaternion dot product
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:plus"
+><A NAME="v%3Aplus"
+></A
+></A
+><B
+>plus</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> t =&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Quaternion addition
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:scale"
+><A NAME="v%3Ascale"
+></A
+></A
+><B
+>scale</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> t =&gt; t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t -&gt; <A HREF="Data-Quaternion.html#t%3AQuat"
+>Quat</A
+> t</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Scale quaternion by constant factor
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.6.0</TD
+></TR
+></TABLE
+></BODY
+></HTML
+>
