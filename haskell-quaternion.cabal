@@ -20,5 +20,5 @@ Description:
         angle form for usage with OpenGL or similar libraries.
 Extra-source-files: README
 Library
-  Build-Depends:  base
+  Build-Depends:   base >= 3 && < 5
   Exposed-Modules: Data.Quaternion
