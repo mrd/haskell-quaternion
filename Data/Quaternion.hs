@@ -11,7 +11,7 @@
 --   @makeMatrix (4, 4) (rowMajorElems q)@
 
 module Data.Quaternion
-  ( Quat, zero, real, imag, mul
+  ( Quat, Vector, zero, real, imag, mul
   , rowMajorElems, eulerAngles, angleAxis
   , normalize, reciprocal, slerp, lookAt
   , fromVec, toVec, dot, plus, scale ) 
