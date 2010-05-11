@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Quaternion.Approx</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Data-Quaternion-Approx.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>haskell-quaternion-1.0: Quaternion creation, manipulation, and conversion to rotation matrices</TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Quaternion.Approx</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Provide approximate comparison functions within a factor of
+ machine epsilon for Doubles, and an extensible type-class through
+ which this can be implemented for other types.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3AApprox"
+>Approx</A
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A~%3D%3D"
+>(~==)</A
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A~%3C"
+>(~&lt;)</A
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A~%3E"
+>(~&gt;)</A
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A~%2F%3D"
+>(~/=)</A
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A~%3C%3D"
+>(~&lt;=)</A
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A~%3E%3D"
+>(~&gt;=)</A
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aclamp"
+>clamp</A
+> :: (a, a) -&gt; a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aamin"
+>amin</A
+> :: a -&gt; a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aamax"
+>amax</A
+> :: a -&gt; a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aacompare"
+>acompare</A
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Data-Ord.html#t%3AOrdering"
+>Ordering</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asgn"
+>sgn</A
+> :: (<A HREF="Data-Quaternion-Approx.html#t%3AApprox"
+>Approx</A
+> a, <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> a) =&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:Approx"
+><A NAME="t%3AApprox"
+></A
+></A
+><B
+>Approx</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Implement methods for (~==) approx-eq and (~&lt;) approx-lt at the
+ minimum.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v:~=="
+><A NAME="v%3A~%3D%3D"
+></A
+></A
+><B
+>(~==)</B
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:~<"
+><A NAME="v%3A~%3C"
+></A
+></A
+><B
+>(~&lt;)</B
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:~>"
+><A NAME="v%3A~%3E"
+></A
+></A
+><B
+>(~&gt;)</B
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:~/="
+><A NAME="v%3A~%2F%3D"
+></A
+></A
+><B
+>(~/=)</B
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:~<="
+><A NAME="v%3A~%3C%3D"
+></A
+></A
+><B
+>(~&lt;=)</B
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:~>="
+><A NAME="v%3A~%3E%3D"
+></A
+></A
+><B
+>(~&gt;=)</B
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:clamp"
+><A NAME="v%3Aclamp"
+></A
+></A
+><B
+>clamp</B
+> :: (a, a) -&gt; a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:amin"
+><A NAME="v%3Aamin"
+></A
+></A
+><B
+>amin</B
+> :: a -&gt; a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:amax"
+><A NAME="v%3Aamax"
+></A
+></A
+><B
+>amax</B
+> :: a -&gt; a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:acompare"
+><A NAME="v%3Aacompare"
+></A
+></A
+><B
+>acompare</B
+> :: a -&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Data-Ord.html#t%3AOrdering"
+>Ordering</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:sgn"
+><A NAME="v%3Asgn"
+></A
+></A
+><B
+>sgn</B
+> :: (<A HREF="Data-Quaternion-Approx.html#t%3AApprox"
+>Approx</A
+> a, <A HREF="/usr/share/doc/ghc6-doc/html/libraries/base-4.2.0.0/Prelude.html#t%3ANum"
+>Num</A
+> a) =&gt; a -&gt; <A HREF="/usr/share/doc/ghc6-doc/html/libraries/ghc-prim-0.2.0.0/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>approx-sgn (-1, 0, or 1 depending on sign of number)
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.6.0</TD
+></TR
+></TABLE
+></BODY
+></HTML
+>
