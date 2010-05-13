@@ -23,6 +23,14 @@ import Data.Quaternion.Approx
 data Quat a = Q { real :: a         -- ^ real part
                 , imag :: (a, a, a) -- ^ imaginary part
                 }
+  deriving Show
+
+instance Approx a => Eq (Quat a) where
+  q == r = real q ~== real r && imag q ~== imag r
+instance Approx a => Ord (Quat a) where
+  q `compare` r = case real q `acompare` real r of
+                    EQ -> imag q `acompare` imag r
+                    x  -> x
 
 -- |'Vector' is just a more descriptive name used for a 3-tuple here.
 type Vector a = (a, a, a)
